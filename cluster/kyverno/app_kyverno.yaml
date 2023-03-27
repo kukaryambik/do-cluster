@@ -1,0 +1,40 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kyverno
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kyverno
+    server: "https://kubernetes.default.svc"
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - FailOnSharedResource=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 5
+        maxDuration: 10m
+  source:
+    repoURL: "https://kyverno.github.io/kyverno/"
+    targetRevision: "~2.7.1"
+    chart: "kyverno"
+    helm:
+      releaseName: kyverno
+      values: |-
+        grafana:
+          enabled: true
+          namespace: monitoring
+        serviceMonitor:
+          enabled: true
+        cleanupController:
+          serviceMonitor:
+            enabled: true

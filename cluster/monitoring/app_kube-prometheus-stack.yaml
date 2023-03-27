@@ -1,0 +1,54 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  annotations:
+    argocd.argoproj.io/sync-wave: "-25"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: monitoring
+    server: "https://kubernetes.default.svc"
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - FailOnSharedResource=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 5
+        maxDuration: 10m
+  source:
+    repoURL: "https://prometheus-community.github.io/helm-charts"
+    targetRevision: "45.x.x"
+    chart: "kube-prometheus-stack"
+    helm:
+      releaseName: kube-prometheus-stack
+      values: |-
+        prometheus:
+          prometheusSpec:
+            scrapeInterval: 30s
+            evaluationInterval: 30s
+        grafana:
+          serviceMonitor:
+            enabled: true
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-issuer"
+              external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+            hosts:
+              - grafana.kroche.co
+            path: /
+            tls:
+              - secretName: grafana-kroche-co
+                hosts:
+                  - grafana.kroche.co

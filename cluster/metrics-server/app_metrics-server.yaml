@@ -1,0 +1,39 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metrics-server
+  annotations:
+    argocd.argoproj.io/sync-wave: "-20"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: metrics-server
+    server: "https://kubernetes.default.svc"
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - FailOnSharedResource=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 5
+        maxDuration: 10m
+  source:
+    repoURL: "https://kubernetes-sigs.github.io/metrics-server/"
+    targetRevision: "~3.8.3"
+    chart: "metrics-server"
+    helm:
+      releaseName: metrics-server
+      values: |-
+        addonResizer:
+          enabled: true
+        metrics:
+          enabled: true
+        serviceMonitor:
+          enabled: true

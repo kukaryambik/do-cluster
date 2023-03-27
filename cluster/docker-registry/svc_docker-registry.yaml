@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-registry
+  annotations:
+    external-dns.alpha.kubernetes.io/internal-hostname: >-
+      registry.dev.kroche.co.
+spec:
+  selector:
+    app.kubernetes.io/name: docker-registry
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 443
+      targetPort: https

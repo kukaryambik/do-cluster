@@ -1,0 +1,13 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: &name aoai-bot
+  labels:
+    app.kubernetes.io/name: *name
+  annotations:
+    argocd.argoproj.io/sync-options: >-
+      ServerSideApply=true,
+      Prune=false,
+      Replace=false,
+      Force=false

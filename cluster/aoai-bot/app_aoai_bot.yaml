@@ -1,0 +1,71 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aoai-bot
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: aoai-bot
+  destination:
+    namespace: aoai-bot
+    server: "https://kubernetes.default.svc"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - FailOnSharedResource=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 5
+        maxDuration: 10m
+  source:
+    repoURL: "https://gitlab.com/kukaryambik/aoai-bot.git"
+    targetRevision: "HEAD"
+    path: "chart"
+    helm:
+      releaseName: aoai-bot
+      parameters:
+        - name: podLabels.app\.kubernetes\.io\/version
+          value: $ARGOCD_APP_REVISION
+      values: |
+        podAnnotations:
+          init-build.kroche.co/enabled: "true"
+          init-build.kroche.co/context: "git://gitlab.com/kukaryambik/aoai-bot.git"
+          init-build.kroche.co/image: "example.com/aoai:latest"
+        image:
+          registry: example.com
+          repository: aoai
+          tag: latest
+          pullPolicy: "Always"
+        extraEnvVars:
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: chat-gpt-api
+                key: password
+          - name: TELEGRAM_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: aoai-bot
+                key: password
+          - name: MONGO_DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-credentials
+                key: url
+          - name: ALLOWED_USERS
+            valueFrom:
+              secretKeyRef:
+                name: aoai-allowed-users
+                key: users
+        mongodb:
+          enabled: true
+          architecture: standalone
+          auth:
+            databases: [telegram_bot_db]
+            usernames: [kubeai]
+            existingSecret: mongodb-credentials

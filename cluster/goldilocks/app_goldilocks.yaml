@@ -1,0 +1,47 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: goldilocks
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: goldilocks
+    server: "https://kubernetes.default.svc"
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - FailOnSharedResource=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 5
+        maxDuration: 10m
+  source:
+    repoURL: "https://charts.fairwinds.com/stable"
+    targetRevision: "~6.5.1"
+    chart: "goldilocks"
+    helm:
+      releaseName: goldilocks
+      values: |
+        dashboard:
+          enabled: true
+          replicaCount: 1
+        vpa:
+          enabled: true
+          admissionController:
+            enabled: true
+          recommender:
+            extraArgs:
+              prometheus-address: >-
+                http://prometheus-operated.monitoring.svc.cluster.local:8429
+              storage: prometheus
+          updater:
+            enabled: true
+            extraArgs:
+              min-replicas: 1

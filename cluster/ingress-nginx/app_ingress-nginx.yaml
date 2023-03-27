@@ -1,0 +1,44 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  annotations:
+    argocd.argoproj.io/sync-wave: "-30"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: ingress-nginx
+    server: "https://kubernetes.default.svc"
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - FailOnSharedResource=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 5
+        maxDuration: 10m
+  source:
+    repoURL: "https://kubernetes.github.io/ingress-nginx"
+    targetRevision: "~4.5.2"
+    chart: "ingress-nginx"
+    helm:
+      releaseName: ingress-nginx
+      values: |
+        controller:
+          publishService:
+            enabled: true
+          allowSnippetAnnotations: false
+          service:
+            annotations:
+              kubernetes.digitalocean.com/load-balancer-id: "kroche-dev-k8s"
+        rbac:
+          create: true
+          createClusterRole: true
+          createRole: true
