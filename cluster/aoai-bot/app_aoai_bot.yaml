@@ -23,7 +23,7 @@ spec:
         factor: 5
         maxDuration: 10m
   source:
-    repoURL: "https://gitlab.com/kukaryambik/aoai-bot.git"
+    repoURL: "https://github.com/kroche-co/aoai-bot.git"
     targetRevision: "HEAD"
     path: "chart"
     helm:
@@ -34,7 +34,7 @@ spec:
       values: |
         podAnnotations:
           init-build.kroche.co/enabled: "true"
-          init-build.kroche.co/context: "git://gitlab.com/kukaryambik/aoai-bot.git"
+          init-build.kroche.co/context: "git://github.com/kroche-co/aoai-bot.git"
           init-build.kroche.co/image: "example.com/aoai:latest"
         image:
           registry: example.com
