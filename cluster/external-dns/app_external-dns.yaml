@@ -38,6 +38,7 @@ spec:
                 name: cloudflare-api-token
                 key: api-token
         extraArgs:
+          - --log-level=debug
           - --publish-internal-services
         provider: cloudflare
         domainFilters:
