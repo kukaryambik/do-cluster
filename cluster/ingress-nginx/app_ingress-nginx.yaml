@@ -26,7 +26,7 @@ spec:
         maxDuration: 10m
   source:
     repoURL: "https://kubernetes.github.io/ingress-nginx"
-    targetRevision: "~4.5.2"
+    targetRevision: "~4.6.0"
     chart: "ingress-nginx"
     helm:
       releaseName: ingress-nginx
@@ -37,7 +37,7 @@ spec:
           allowSnippetAnnotations: false
           service:
             annotations:
-              kubernetes.digitalocean.com/load-balancer-id: "kroche-dev-k8s"
+              kubernetes.digitalocean.com/load-balancer-id: "kroche-default"
         rbac:
           create: true
           createClusterRole: true
