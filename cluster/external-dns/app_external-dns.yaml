@@ -37,8 +37,8 @@ spec:
               secretKeyRef:
                 name: cloudflare-api-token
                 key: api-token
+        logLevel: debug
         extraArgs:
-          - --log-level=debug
           - --publish-internal-services
         provider: cloudflare
         domainFilters:
