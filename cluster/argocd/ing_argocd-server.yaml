@@ -28,4 +28,4 @@ spec:
   tls:
     - hosts:
         - argocd.kroche.co
-      secretName: argocd.kroche.co
+      secretName: argocd-kroche-co
