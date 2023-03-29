@@ -13,7 +13,8 @@ spec:
     metadata:
       annotations:
         init-build.kroche.co/enabled: "true"
-        init-build.kroche.co/context: "git://github.com/kroche-co/requests-counter.git"
+        init-build.kroche.co/context: >
+          git://github.com/kroche-co/requests-counter.git
         init-build.kroche.co/image: "requests-counter"
       labels:
         app.kubernetes.io/name: requests-counter

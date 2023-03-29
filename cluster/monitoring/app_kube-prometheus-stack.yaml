@@ -20,10 +20,10 @@ spec:
       - FailOnSharedResource=true
       - ServerSideApply=true
     retry:
-      limit: 5
+      limit: 15
       backoff:
         duration: 5s
-        factor: 5
+        factor: 2
         maxDuration: 10m
   source:
     repoURL: "https://prometheus-community.github.io/helm-charts"
@@ -37,9 +37,20 @@ spec:
             scrapeInterval: 30s
             evaluationInterval: 30s
         grafana:
+          envValueFrom:
+            GF_AUTH_GITHUB_CLIENT_ID:
+              secretKeyRef:
+                name: grafana-github-oauth
+                key: client-id
+            GF_AUTH_GITHUB_CLIENT_SECRET:
+              secretKeyRef:
+                name: grafana-github-oauth
+                key: client-secret
           serviceMonitor:
             enabled: true
           grafana.ini:
+            security:
+              disable_initial_admin_creation: true
             server:
               enable_gzip: true
               domain: grafana.kroche.co
@@ -50,8 +61,6 @@ spec:
               enabled: true
               allow_sign_up: true
               auto_login: true
-              client_id: "${GH_CLIENT_ID}"
-              client_secret: "${GH_CLIENT_SECRET}"
               scopes: "user:email,read:org"
               auth_url: https://github.com/login/oauth/authorize
               token_url: https://github.com/login/oauth/access_token

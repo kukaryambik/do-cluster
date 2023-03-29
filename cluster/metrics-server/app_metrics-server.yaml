@@ -19,10 +19,10 @@ spec:
     syncOptions:
       - FailOnSharedResource=true
     retry:
-      limit: 5
+      limit: 15
       backoff:
         duration: 5s
-        factor: 5
+        factor: 2
         maxDuration: 10m
   source:
     repoURL: "https://kubernetes-sigs.github.io/metrics-server/"

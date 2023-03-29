@@ -22,9 +22,9 @@ spec:
                 init-build.kroche.co/enabled: "true"
       preconditions:
         all:
-        - key: "{{request.operation || 'BACKGROUND'}}"
-          operator: NotEquals
-          value: DELETE
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: NotEquals
+            value: DELETE
       mutate:
         patchStrategicMerge:
           spec:
@@ -35,7 +35,9 @@ spec:
                 args:
                   - >-
                     /kaniko/executor
-                    --context='{{request.object.metadata.annotations."init-build.kroche.co/context"}}'
+                    --context='''{{
+                      request.object.metadata.annotations."init-build.kroche.co/context"
+                    }}'''
                     --context-sub-path='''{{
                       not_null(
                         request.object.metadata.annotations."init-build.kroche.co/context-sub-path",
@@ -48,11 +50,20 @@ spec:
                         'Dockerfile'
                       )
                     }}'''
-                    --destination='registry.dev.kroche.co/{{request.object.metadata.namespace}}/{{request.object.metadata.annotations."init-build.kroche.co/image"}}'
+                    --destination='''registry.dev.kroche.co/{{
+                      request.object.metadata.namespace
+                    }}/{{
+                      request.object.metadata.annotations."init-build.kroche.co/image"
+                    }}'''
                     --cache=true
                     --cache-copy-layers=true
                     --cache-repo='registry.dev.kroche.co/{{request.object.metadata.namespace}}/cache'
-                    {{ request.object.metadata.annotations."init-build.kroche.co/extra-args" || '' }}
+                    {{
+                      not_null(
+                        request.object.metadata.annotations."init-build.kroche.co/extra-args",
+                        ''
+                      )
+                    }}
     - name: init-build-change
       match:
         any:
@@ -65,9 +76,9 @@ spec:
                 init-build.kroche.co/enabled: "true"
       preconditions:
         all:
-        - key: "{{request.operation || 'BACKGROUND'}}"
-          operator: NotEquals
-          value: DELETE
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: NotEquals
+            value: DELETE
       mutate:
         foreach:
           - list: "request.object.spec.containers"
@@ -77,8 +88,14 @@ spec:
                   - name: "{{ element.name }}"
                     image: >-
                       {{ regex_replace_all_literal(
-                        '^{{ request.object.metadata.annotations."init-build.kroche.co/image" }}$',
+                        '^{{
+                          request.object.metadata.annotations."init-build.kroche.co/image"
+                        }}$',
                         '{{ element.image }}',
-                        'registry.dev.kroche.co/{{ request.object.metadata.namespace }}/{{ request.object.metadata.annotations."init-build.kroche.co/image" }}'
+                        'registry.dev.kroche.co/{{
+                          request.object.metadata.namespace
+                        }}/{{
+                          request.object.metadata.annotations."init-build.kroche.co/image"
+                        }}'
                       ) }}
                     imagePullPolicy: Always
