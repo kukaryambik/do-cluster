@@ -8,8 +8,8 @@ metadata:
     goldilocks.fairwinds.com/enabled: "true"
     goldilocks.fairwinds.com/vpa-update-mode: "auto"
   annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookFailed
     argocd.argoproj.io/sync-options: >-
       ServerSideApply=true,
-      Prune=false,
-      Replace=false,
-      Force=false
+      Validate=false
