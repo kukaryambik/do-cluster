@@ -35,5 +35,3 @@ spec:
             replication_factor: 1
         singleBinary:
           replicas: 1
-          persistence:
-            enabled: false
