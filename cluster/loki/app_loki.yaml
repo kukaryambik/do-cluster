@@ -31,7 +31,9 @@ spec:
       values: |-
         loki:
           auth_enabled: false
-        read:
+          commonConfig:
+            replication_factor: 1
+        singleBinary:
           replicas: 1
           autoscaling:
             enabled: true
