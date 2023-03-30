@@ -2,7 +2,7 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: &name monitoring
+  name: &name grafana
   labels:
     app.kubernetes.io/name: *name
     goldilocks.fairwinds.com/enabled: "true"
