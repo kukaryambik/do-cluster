@@ -52,6 +52,7 @@ spec:
             label: grafana_dashboard
             labelValue: "1"
             searchNamespace: ALL
+            initDatasources: true
         grafana.ini:
           security:
             disable_initial_admin_creation: true
