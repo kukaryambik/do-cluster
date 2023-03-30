@@ -9,7 +9,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: monitoring
+    namespace: prometheus
     server: "https://kubernetes.default.svc"
   project: infra
   syncPolicy:
@@ -38,3 +38,5 @@ spec:
             evaluationInterval: 30s
         grafana:
           enabled: false
+          forceDeployDatasources: true
+          forceDeployDashboards: true

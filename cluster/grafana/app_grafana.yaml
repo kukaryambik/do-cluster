@@ -7,7 +7,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: monitoring
+    namespace: grafana
     server: "https://kubernetes.default.svc"
   project: infra
   syncPolicy:
@@ -44,11 +44,14 @@ spec:
           enableUniqueFilenames: true
           dashboards:
             enabled: true
-            SCProvider: true
             label: grafana_dashboard
+            labelValue: "1"
+            searchNamespace: ALL
           datasources:
             enabled: true
-            label: grafana_datasource
+            label: grafana_dashboard
+            labelValue: "1"
+            searchNamespace: ALL
         grafana.ini:
           security:
             disable_initial_admin_creation: true
