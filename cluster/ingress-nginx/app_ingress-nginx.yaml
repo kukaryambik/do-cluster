@@ -35,9 +35,6 @@ spec:
           publishService:
             enabled: true
           allowSnippetAnnotations: false
-          service:
-            annotations:
-              kubernetes.digitalocean.com/load-balancer-id: "kroche-default"
         rbac:
           create: true
           createClusterRole: true
