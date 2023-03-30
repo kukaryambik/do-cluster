@@ -54,8 +54,6 @@ spec:
             searchNamespace: ALL
             initDatasources: true
         grafana.ini:
-          security:
-            disable_initial_admin_creation: true
           server:
             enable_gzip: true
             domain: grafana.kroche.co
