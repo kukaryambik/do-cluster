@@ -2,7 +2,7 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: &name requests-counter
+  name: &name loki
   labels:
     app.kubernetes.io/name: *name
     goldilocks.fairwinds.com/enabled: "true"

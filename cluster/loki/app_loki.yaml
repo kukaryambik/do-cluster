@@ -1,0 +1,31 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: loki
+    server: "https://kubernetes.default.svc"
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - FailOnSharedResource=true
+    retry:
+      limit: 15
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 10m
+  source:
+    repoURL: "https://grafana.github.io/helm-charts"
+    targetRevision: "~4.9.0"
+    chart: "loki"
+    helm:
+      releaseName: loki
+      values: ""
