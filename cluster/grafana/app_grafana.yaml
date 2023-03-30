@@ -49,7 +49,7 @@ spec:
             searchNamespace: ALL
           datasources:
             enabled: true
-            label: grafana_dashboard
+            label: grafana_datasource
             labelValue: "1"
             searchNamespace: ALL
             initDatasources: true
