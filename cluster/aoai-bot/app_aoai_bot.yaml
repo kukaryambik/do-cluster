@@ -3,6 +3,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: aoai-bot
+  annotations:
+    a8r.io/repository: "https://github.com/kroche-co/aoai-bot.git"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -33,6 +35,7 @@ spec:
           value: $ARGOCD_APP_REVISION
       values: |
         podAnnotations:
+          a8r.io/repository: "https://github.com/kroche-co/aoai-bot.git"
           init-build.kroche.co/enabled: "true"
           init-build.kroche.co/context: >
             git://github.com/kroche-co/aoai-bot.git
