@@ -73,3 +73,5 @@ spec:
             databases: [telegram_bot_db]
             usernames: [kubeai]
             existingSecret: mongodb-credentials
+          updateStrategy:
+            type: "Recreate"
