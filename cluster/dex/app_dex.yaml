@@ -91,7 +91,7 @@ spec:
               teamNameField: slug
               useLoginAsID: true
           logger:
-            level: "info"
+            level: "debug"
           staticClients:
             - name: Argocd OIDC Dex App
               id: $GITHUB_ARGOCD_CLIENT_ID
