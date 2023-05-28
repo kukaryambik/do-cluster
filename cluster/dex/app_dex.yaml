@@ -74,9 +74,9 @@ spec:
             config:
               inCluster: true
           enablePasswordDB: true
-          oauth2:
-            skipApprovalScreen: true
-            alwaysShowLoginScreen: false
+          # oauth2:
+          #   skipApprovalScreen: true
+          #   alwaysShowLoginScreen: false
           connectors:
             - type: github
               id: github
