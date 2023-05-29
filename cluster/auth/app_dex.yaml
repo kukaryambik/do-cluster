@@ -9,7 +9,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: dex
+    namespace: auth
     server: "https://kubernetes.default.svc"
   project: infra
   syncPolicy:
@@ -93,10 +93,10 @@ spec:
           logger:
             level: "debug"
           staticClients:
-            - name: Argocd OIDC Dex App
-              id: $GITHUB_ARGOCD_CLIENT_ID
-              secret: $GITHUB_ARGOCD_CLIENT_SECRET
+            - id: oauth2-proxy
               redirectURIs:
-                - https://argocd.kroche.co/callback
+                - "https://oauth2-proxy.kroche.co/oauth2/callback"
+              name: "OAuth2 Proxy"
+              secret: "b2F1dGgyLXByb3h5LWNsaWVudC1zZWNyZXQK"
         serviceMonitor:
           enabled: true
