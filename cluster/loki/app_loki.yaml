@@ -24,11 +24,11 @@ spec:
         maxDuration: 10m
   source:
     repoURL: "https://grafana.github.io/helm-charts"
-    targetRevision: "~2.9.9"
+    targetRevision: "~2.10.2"
     chart: "loki-stack"
     helm:
       releaseName: loki-stack
-      values: |-
+      valuesObject:
         loki:
           serviceMonitor:
             enabled: true

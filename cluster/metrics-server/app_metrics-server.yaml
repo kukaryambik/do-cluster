@@ -26,11 +26,11 @@ spec:
         maxDuration: 10m
   source:
     repoURL: "https://kubernetes-sigs.github.io/metrics-server/"
-    targetRevision: "~3.8.3"
+    targetRevision: "~3.12.2"
     chart: "metrics-server"
     helm:
       releaseName: metrics-server
-      values: |-
+      valuesObject:
         addonResizer:
           enabled: true
         metrics:
