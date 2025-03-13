@@ -29,7 +29,7 @@ spec:
     chart: "cert-manager"
     helm:
       releaseName: cert-manager
-      values: |-
+      valuesObject:
         installCRDs: true
         enableCertificateOwnerRef: true
         prometheus:

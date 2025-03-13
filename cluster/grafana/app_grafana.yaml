@@ -28,7 +28,7 @@ spec:
     chart: "grafana"
     helm:
       releaseName: grafana
-      values: |-
+      valuesObject:
         envValueFrom:
           GF_AUTH_GITHUB_CLIENT_ID:
             secretKeyRef:

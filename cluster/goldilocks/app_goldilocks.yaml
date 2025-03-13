@@ -28,7 +28,7 @@ spec:
     chart: "goldilocks"
     helm:
       releaseName: goldilocks
-      values: |
+      valuesObject:
         dashboard:
           enabled: true
           replicaCount: 1

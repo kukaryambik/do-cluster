@@ -30,14 +30,14 @@ spec:
     chart: "ingress-nginx"
     helm:
       releaseName: ingress-nginx
-      values: |
+      valuesObject:
         controller:
           publishService:
             enabled: true
           allowSnippetAnnotations: false
           config:
             ssl-redirect: "true"
-            force-ssl-redirect: "true"
+            # force-ssl-redirect: "true"
             # global-auth-url: ""
             # global-auth-method: ""
         rbac:
