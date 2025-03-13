@@ -6,6 +6,7 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-issuer"
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
   labels:
     app.kubernetes.io/component: server
     app.kubernetes.io/instance: argocd
