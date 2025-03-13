@@ -56,8 +56,8 @@ spec:
         grafana.ini:
           server:
             enable_gzip: true
-            domain: grafana.kroche.co
-            root_url: https://grafana.kroche.co:443
+            domain: grafana.iakimenko.link
+            root_url: https://grafana.iakimenko.link:443
           auth:
             oauth_auto_login: true
           auth.github:
@@ -78,9 +78,9 @@ spec:
             cert-manager.io/cluster-issuer: "letsencrypt-issuer"
             external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
           hosts:
-            - grafana.kroche.co
+            - grafana.iakimenko.link
           path: /
           tls:
-            - secretName: grafana-kroche-co
+            - secretName: grafana-iakimenko-link
               hosts:
-                - grafana.kroche.co
+                - grafana.iakimenko.link
