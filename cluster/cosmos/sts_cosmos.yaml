@@ -16,6 +16,10 @@ spec:
       labels:
         app.kubernetes.io/name: cosmos
     spec:
+      volumes:
+        - name: init-sh
+          configMap:
+            name: init-sh
       initContainers:
         - name: init-cosmos
           image: ghcr.io/cosmos/gaia:v22.3.0
@@ -28,6 +32,10 @@ spec:
           volumeMounts:
             - name: data
               mountPath: $(HOME)
+            - name: init-sh
+              mountPath: $(HOME)/init.sh
+              subPath: init.sh
+              defaultMode: 0550
       containers:
         - name: cosmos
           image: ghcr.io/cosmos/gaia:v22.3.0
