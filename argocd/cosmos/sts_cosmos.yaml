@@ -35,7 +35,7 @@ spec:
             defaultMode: 0777
       initContainers:
         - name: init-cosmos
-          image: ghcr.io/cosmos/gaia:v22.3.1
+          image: ghcr.io/cosmos/gaia:v23.0.0-rc4
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -62,7 +62,7 @@ spec:
               subPath: init.sh
       containers:
         - name: cosmos
-          image: ghcr.io/cosmos/gaia:v22.3.1
+          image: ghcr.io/cosmos/gaia:v23.0.0-rc4
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
