@@ -27,6 +27,8 @@ spec:
       shareProcessNamespace: false
       enableServiceLinks: false
       volumes:
+        - emptyDir: {}
+          name: emptydir
         - name: init-sh
           configMap:
             name: init-sh
@@ -51,6 +53,8 @@ spec:
               ls -lha /gaia
               [ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"
           volumeMounts:
+            - mountPath: /tmp
+              name: emptydir
             - name: data
               mountPath: /gaia
             - name: init-sh
@@ -76,6 +80,8 @@ spec:
             - containerPort: 26657
               name: rpc
           volumeMounts:
+            - mountPath: /tmp
+              name: emptydir
             - name: data
               mountPath: "/gaia"
   volumeClaimTemplates:
