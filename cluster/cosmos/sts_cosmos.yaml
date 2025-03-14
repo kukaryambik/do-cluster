@@ -46,6 +46,8 @@ spec:
           command: ["sh", "-c"]
           args:
             - |-
+              df -h
+              ls -lha /
               ls -lha $HOME
               [ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"
           volumeMounts:
