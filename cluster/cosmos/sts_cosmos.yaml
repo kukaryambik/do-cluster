@@ -35,7 +35,7 @@ spec:
             - name: init-sh
               mountPath: $(HOME)/init.sh
               subPath: init.sh
-              defaultMode: 0550
+              defaultMode: 0777
       containers:
         - name: cosmos
           image: ghcr.io/cosmos/gaia:v22.3.0
