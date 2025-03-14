@@ -24,5 +24,5 @@ rm -rf $NODE_HOME/wasm $NODE_HOME/data
 wget -qO- $SNAPSHOT_URL | tar vxz -C $NODE_HOME
 
 # Replace genesis file
-wget $GENESIS_URL -O genesis.json
-mv genesis.json $NODE_HOME/config/genesis.json
+wget $GENESIS_URL -O /tmp/genesis.json
+mv /tmp/genesis.json $NODE_HOME/config/genesis.json

@@ -48,10 +48,10 @@ spec:
           command: ["sh", "-c"]
           args:
             - |-
-              df -h
-              ls -lha /
-              ls -lha /gaia
-              [ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"
+              if ! [ -f "$HOME/._Mark" ]; then
+                $HOME/init.sh
+                touch "$HOME/._Mark"
+              fi
           volumeMounts:
             - mountPath: /tmp
               name: emptydir
