@@ -72,10 +72,12 @@ spec:
           env:
             - name: HOME
               value: /gaia
-          command: ["sh", "-c"]
-          args:
-            - |-
-              gaiad start --x-crisis-skip-assert-invariants --home $HOME
+          command: ["sh"]
+          stdin: true
+          tty: true
+          # args:
+          #   - |-
+          #     gaiad start --x-crisis-skip-assert-invariants --home $HOME
           ports:
             - containerPort: 26657
               name: rpc
