@@ -1,0 +1,74 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: default
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/kukaryambik/argocd-cluster.git
+        revision: HEAD
+        directories:
+          - path: cluster/*
+          - path: cluster/*/_pre
+          - path: cluster/*/_post
+  template:
+    metadata:
+      name: >-
+        {{- if (regexMatch "^_(pre|post)$" .path.basename) -}}
+        {{ .path.basenameNormalized }}--{{ index .path.segments (sub (len .path.segments) 2) | normalize }}
+        {{- else -}}
+        main--{{ .path.basenameNormalized }}
+        {{- end -}}
+      annotations:
+        argocd.argoproj.io/sync-wave: >-
+          {{- if eq .path.basename "_pre" -}}
+          -10
+          {{- else if eq .path.basename "_post" -}}
+          10
+          {{- else -}}
+          0
+          {{- end -}}
+    spec:
+      destination:
+        namespace: &ns >-
+          {{- if (regexMatch "^_(pre|post)$" .path.basename) -}}
+          {{ index .path.segments (sub (len .path.segments) 2) | normalize -}}
+          {{- else if not (hasPrefix "_" .path.basename) -}}
+          {{ .path.basenameNormalized -}}
+          {{- end -}}
+        server: "https://kubernetes.default.svc"
+      project: default
+      source:
+        path: "{{ .path.path }}"
+        repoURL: https://github.com/kukaryambik/argocd-cluster.git
+        targetRevision: "HEAD"
+      ignoreDifferences:
+        - group: "*"
+          kind: "*"
+          jqPathExpressions:
+            - 'select(.metadata.annotations."argocd.argoproj.io/ignore-differences") | .data[] // .spec'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - FailOnSharedResource=true
+        retry:
+          limit: 15
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 10m
+        managedNamespaceMetadata:
+          annotations:
+            argocd.argoproj.io/sync-options: >-
+              Delete=false,
+              Force=false,
+              Prune=false,
+              Replace=false,
+              ServerSideApply=true
+          labels:
+            app.kubernetes.io/name: *ns
