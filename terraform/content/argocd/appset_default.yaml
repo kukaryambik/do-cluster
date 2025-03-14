@@ -7,12 +7,12 @@ spec:
   goTemplate: true
   generators:
     - git:
-        repoURL: https://github.com/kukaryambik/argocd-cluster.git
+        repoURL: https://github.com/kukaryambik/do-cluster.git
         revision: HEAD
         directories:
-          - path: cluster/*
-          - path: cluster/*/_pre
-          - path: cluster/*/_post
+          - path: argocd/*
+          - path: argocd/*/_pre
+          - path: argocd/*/_post
   template:
     metadata:
       name: >-
@@ -42,7 +42,7 @@ spec:
       project: default
       source:
         path: "{{ .path.path }}"
-        repoURL: https://github.com/kukaryambik/argocd-cluster.git
+        repoURL: https://github.com/kukaryambik/do-cluster.git
         targetRevision: "HEAD"
       ignoreDifferences:
         - group: "*"
