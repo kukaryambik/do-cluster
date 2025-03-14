@@ -42,7 +42,7 @@ spec:
             readOnlyRootFilesystem: true
           env:
             - name: HOME
-              value: /opt/gaia
+              value: /gaia
           command: ["sh", "-c"]
           args:
             - |-
@@ -52,9 +52,9 @@ spec:
               [ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"
           volumeMounts:
             - name: data
-              mountPath: $(HOME)
+              mountPath: "$(HOME)"
             - name: init-sh
-              mountPath: $(HOME)/init.sh
+              mountPath: "$(HOME)/init.sh"
               subPath: init.sh
       containers:
         - name: cosmos
@@ -71,13 +71,13 @@ spec:
           command: ["sh", "-c"]
           args:
             - |-
-              gaiad start --x-crisis-skip-assert-invariants --home $(HOME)
+              gaiad start --x-crisis-skip-assert-invariants --home $HOME
           ports:
             - containerPort: 26657
               name: rpc
           volumeMounts:
             - name: data
-              mountPath: $(HOME)
+              mountPath: "$(HOME)"
   volumeClaimTemplates:
     - metadata:
         name: data
