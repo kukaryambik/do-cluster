@@ -48,13 +48,13 @@ spec:
             - |-
               df -h
               ls -lha /
-              ls -lha $HOME
+              ls -lha /gaia
               [ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"
           volumeMounts:
             - name: data
-              mountPath: "$(HOME)"
+              mountPath: /gaia
             - name: init-sh
-              mountPath: "$(HOME)/init.sh"
+              mountPath: /gaia/init.sh'
               subPath: init.sh
       containers:
         - name: cosmos
@@ -77,7 +77,7 @@ spec:
               name: rpc
           volumeMounts:
             - name: data
-              mountPath: "$(HOME)"
+              mountPath: "/gaia"
   volumeClaimTemplates:
     - metadata:
         name: data
