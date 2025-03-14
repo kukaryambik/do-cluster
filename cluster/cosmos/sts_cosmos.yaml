@@ -42,7 +42,7 @@ spec:
             readOnlyRootFilesystem: true
           env:
             - name: HOME
-              value: /root/.gaia
+              value: /gaia
           command: ["sh", "-c"]
           args:
             - '[ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"'
@@ -63,7 +63,7 @@ spec:
             readOnlyRootFilesystem: true
           env:
             - name: HOME
-              value: /root/.gaia
+              value: /gaia
           command: ["sh", "-c"]
           args:
             - |-
