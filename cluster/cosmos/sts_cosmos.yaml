@@ -30,7 +30,7 @@ spec:
         - name: init-sh
           configMap:
             name: init-sh
-            defaultMode: 0555
+            defaultMode: 0777
       initContainers:
         - name: init-cosmos
           image: ghcr.io/cosmos/gaia:v22.3.0
