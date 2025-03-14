@@ -5,8 +5,6 @@ metadata:
   name: &name metrics-server
   labels:
     app.kubernetes.io/name: *name
-    goldilocks.fairwinds.com/enabled: "true"
-    goldilocks.fairwinds.com/vpa-update-mode: "auto"
   annotations:
     argocd.argoproj.io/sync-options: >-
       Delete=false,
