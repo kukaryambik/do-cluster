@@ -16,6 +16,16 @@ spec:
       labels:
         app.kubernetes.io/name: cosmos
     spec:
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+        supplementalGroups: [65534]
+      shareProcessNamespace: false
+      enableServiceLinks: false
       volumes:
         - name: init-sh
           configMap:
@@ -24,6 +34,12 @@ spec:
       initContainers:
         - name: init-cosmos
           image: ghcr.io/cosmos/gaia:v22.3.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+            privileged: false
+            readOnlyRootFilesystem: true
           env:
             - name: HOME
               value: /root/.gaia
@@ -39,6 +55,12 @@ spec:
       containers:
         - name: cosmos
           image: ghcr.io/cosmos/gaia:v22.3.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+            privileged: false
+            readOnlyRootFilesystem: true
           env:
             - name: HOME
               value: /root/.gaia
