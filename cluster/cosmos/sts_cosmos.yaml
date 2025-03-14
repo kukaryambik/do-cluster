@@ -45,7 +45,9 @@ spec:
               value: /opt/gaia
           command: ["sh", "-c"]
           args:
-            - '[ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"'
+            - |-
+              ls -lha $HOME
+              [ -f "$HOME/._Mark" ] || $HOME/init.sh && touch "$HOME/._Mark"
           volumeMounts:
             - name: data
               mountPath: $(HOME)
