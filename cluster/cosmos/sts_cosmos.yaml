@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/name: cosmos
+  name: cosmos
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cosmos
+  serviceName: cosmos
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cosmos
+    spec:
+      initContainers:
+        - name: init-cosmos
+          image: ghcr.io/cosmos/gaia:v22.3.0
+          env:
+            - name: HOME
+              value: /root/.gaia
+          command: ["sh", "-c"]
+          args:
+            - '[ -f "$HOME/._Mark" ] || ./init.sh && touch "$HOME/._Mark"'
+          volumeMounts:
+            - name: data
+              mountPath: $(HOME)
+      containers:
+        - name: cosmos
+          image: ghcr.io/cosmos/gaia:v22.3.0
+          env:
+            - name: HOME
+              value: /root/.gaia
+          command: ["sh", "-c"]
+          args:
+            - |-
+              gaiad start --x-crisis-skip-assert-invariants --home $(HOME)
+          ports:
+            - containerPort: 26657
+              name: rpc
+          volumeMounts:
+            - name: data
+              mountPath: $(HOME)
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        resources:
+          requests:
+            storage: 10Gi

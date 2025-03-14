@@ -6,25 +6,22 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-issuer"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
   labels:
-    app.kubernetes.io/component: server
-    app.kubernetes.io/instance: argocd
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-server
+    app.kubernetes.io/name: cosmos
+  name: cosmos
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.iakimenko.link
+    - host: cosmos.iakimenko.link
       http:
         paths:
           - backend:
               service:
-                name: argocd-server
+                name: cosmos
                 port:
-                  name: https
+                  name: rpc
             path: /
             pathType: Prefix
   tls:
     - hosts:
-        - argocd.iakimenko.link
-      secretName: argocd-iakimenko-link
+        - cosmos.iakimenko.link
+      secretName: cosmos-iakimenko-link
