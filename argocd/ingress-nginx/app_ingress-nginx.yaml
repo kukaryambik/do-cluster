@@ -44,3 +44,5 @@ spec:
           create: true
           createClusterRole: true
           createRole: true
+        tcp:
+          "26656": "cosmos/cosmos:26656"

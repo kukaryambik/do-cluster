@@ -13,3 +13,6 @@ spec:
     - name: rpc
       port: 26657
       targetPort: rpc
+    - name: p2p
+      port: 26656
+      targetPort: p2p

@@ -18,6 +18,7 @@ $CHAIN_BINARY config set client keyring-backend test --home "$NODE_HOME"
 $CHAIN_BINARY init "$NODE_MONIKER" --chain-id $CHAIN_ID --home "$NODE_HOME"
 sed -i -e "/minimum-gas-prices =/ s^= .*^= \"$GAS_PRICE\"^" "$NODE_HOME/config/app.toml"
 sed -i -e "/seeds =/ s^= .*^= \"$SEEDS\"^" "$NODE_HOME/config/config.toml"
+sed -i -e "/^laddr = .*:26657/ s^= .*^= \"tcp://0.0.0.0:26657\"^" "$NODE_HOME/config/config.toml"
 
 echo "Downloading snapshot..."
 rm -rf "$NODE_HOME/wasm" "$NODE_HOME/data"

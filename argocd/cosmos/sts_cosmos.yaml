@@ -77,8 +77,22 @@ spec:
             - |-
               gaiad start --x-crisis-skip-assert-invariants --home $HOME
           ports:
+            - containerPort: 26656
+              name: p2p
             - containerPort: 26657
               name: rpc
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: rpc
+              scheme: HTTP
+            initialDelaySeconds: 30
+          readinessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: /status
+              port: rpc
+              scheme: HTTP
           volumeMounts:
             - mountPath: /tmp
               name: emptydir
