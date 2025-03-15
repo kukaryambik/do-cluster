@@ -1,7 +1,8 @@
 version: 2.1
 
 jobs:
-  apply:
+
+  check:
     docker:
       - image: alpine/terragrunt:1.10.3
     steps:
@@ -13,19 +14,65 @@ jobs:
             source $BASH_ENV
       - run:
           name: Check Terraform Formatting
-          command: terragrunt run-all fmt --terragrunt-non-interactive --check
+          command: |-
+            cd ./terraform
+            terragrunt run-all fmt --terragrunt-non-interactive --check
       - run:
           name: Validate Terraform Configuration
-          command: terragrunt run-all validate --terragrunt-non-interactive
+          command: |-
+            cd ./terraform
+            terragrunt run-all validate --terragrunt-non-interactive
+
+  apply-base:
+    docker:
+      - image: alpine/terragrunt:1.10.3
+    steps:
+      - checkout
+      - run:
+          name: Setup HCP Terraform Token
+          command: |
+            echo "export TF_TOKEN_app_terraform_io=$HCP_TOKEN" >> $BASH_ENV
+            source $BASH_ENV
       - run:
           name: Plan Terraform Changes
-          command: terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
+          command: |-
+            cd ./terraform/base
+            terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
       - run:
           name: Apply Terraform Changes
-          command: terragrunt run-all apply --terragrunt-non-interactive tfplan
+          command: |-
+            cd ./terraform/base
+            terragrunt run-all apply --terragrunt-non-interactive tfplan
+
+  apply-content:
+    docker:
+      - image: alpine/terragrunt:1.10.3
+    steps:
+      - checkout
+      - run:
+          name: Setup HCP Terraform Token
+          command: |
+            echo "export TF_TOKEN_app_terraform_io=$HCP_TOKEN" >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Plan Terraform Changes
+          command: |-
+            cd ./terraform/content
+            terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
+      - run:
+          name: Apply Terraform Changes
+          command: |-
+            cd ./terraform/content
+            terragrunt run-all apply --terragrunt-non-interactive tfplan
 
 workflows:
   version: 2
   terraform:
     jobs:
-      - apply
+      - check
+      - apply-base:
+          requires:
+            - check
+      - apply-content:
+          requires:
+            - apply-base

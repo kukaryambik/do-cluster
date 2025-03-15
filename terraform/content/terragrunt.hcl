@@ -7,7 +7,12 @@ include "root" {
 }
 
 dependency "base" {
-  config_path = "../base"
+  config_path  = "../base"
+  mock_outputs = {
+    cluster_endpoint       = "my-cluster-endpoint"
+    cluster_token          = "my-cluster-token"
+    cluster_ca_certificate = base64encode("my-ca-cert")
+  }
 }
 
 inputs = {
