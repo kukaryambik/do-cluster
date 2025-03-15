@@ -32,6 +32,9 @@ spec:
         loki:
           serviceMonitor:
             enabled: true
+          monitoring:
+            dashboards:
+              enabled: true
         grafana:
           sidecar:
             datasources:
