@@ -5,7 +5,7 @@ resource "digitalocean_project" "default" {
   environment = "Production"
 }
 
-# resource "random_pet" "do-k8s-cluster" {}
+resource "random_pet" "do-k8s-cluster" {}
 
 module "do-k8s-cluster" {
   source  = "kukaryambik/k8s-cluster/digitalocean"

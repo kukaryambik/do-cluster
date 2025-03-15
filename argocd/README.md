@@ -4,7 +4,7 @@
 
 ### File Structure
 
-The file structure is based on the K8S cluster structure and grouped by namespace; e.g.: [`cluster/guestbook/app_helm-guestbook.yaml`](./cluster/guestbook/app_helm-guestbook.yaml) for the `helm-guestbook` ArgoCD Application in the `guestbook` namespace.
+The file structure is based on the K8S cluster structure and grouped by namespace; e.g.: [`guestbook/app_helm-guestbook.yaml`](./guestbook/app_helm-guestbook.yaml) for the `helm-guestbook` ArgoCD Application in the `guestbook` namespace.
 The namespace level entities are located in the directories of these namespaces.
 The cluster level entities are located in the `_cluster` directory.
 

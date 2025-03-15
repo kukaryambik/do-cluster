@@ -3,10 +3,10 @@ locals {
 }
 
 provider "kubectl" {
-  host  = data.terraform_remote_state.base.outputs.cluster_endpoint
-  token = data.terraform_remote_state.base.outputs.cluster_token
+  host  = var.cluster_endpoint
+  token = var.cluster_token
   cluster_ca_certificate = base64decode(
-    data.terraform_remote_state.base.outputs.cluster_ca_certificate
+    var.cluster_ca_certificate
   )
   load_config_file = false
 }
