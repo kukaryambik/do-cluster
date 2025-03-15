@@ -1,0 +1,58 @@
+name: Terraform Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/**/*'
+
+env:
+  TF_VERSION: 1.11.2
+  TF_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+
+jobs:
+  terraform-base:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ env.TF_TOKEN }}
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        working-directory: terraform
+        continue-on-error: true
+      
+      - name: Terraform Init (base)
+        id: init-base
+        working-directory: terraform/base
+        run: terraform init -input=false
+      
+      - name: Terraform Validate (base)
+        id: validate-base
+        working-directory: terraform/base
+        run: terraform validate
+      
+      - name: Terraform Apply (base)
+        id: apply-base
+        working-directory: terraform/base
+        run: terraform apply -auto-approve
+
+      - name: Terraform Init (content)
+        id: init-content
+        working-directory: terraform/content
+        run: terraform init -input=false
+      
+      - name: Terraform Validate (content)
+        id: validate-content
+        working-directory: terraform/content
+        run: terraform validate
+      
+      - name: Terraform Apply (content)
+        id: apply-content
+        working-directory: terraform/content
+        run: terraform apply -auto-approve
