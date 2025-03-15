@@ -1,11 +1,11 @@
 resource "digitalocean_project" "default" {
   name        = "my-pet-project"
-  description = "Pet project for self-development."
+  description = "Pet project for self-education."
   purpose     = "Kubernetes Cluster"
   environment = "Production"
 }
 
-resource "random_pet" "do-k8s-cluster" {}
+# resource "random_pet" "do-k8s-cluster" {}
 
 module "do-k8s-cluster" {
   source  = "kukaryambik/k8s-cluster/digitalocean"
