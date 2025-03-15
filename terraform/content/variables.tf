@@ -26,11 +26,11 @@ variable "OP_CREDENTIALS" {
 variable "ARGOCD_USERNAME" {
   type      = string
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "ARGOCD_PASSWORD" {
   type      = string
   sensitive = true
-  default = null
+  default   = null
 }

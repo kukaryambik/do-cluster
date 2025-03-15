@@ -1,7 +1,7 @@
 generate "backend" {
   path      = "backend.tf"
   if_exists = "overwrite_terragrunt"
-  contents = <<EOF
+  contents  = <<EOF
 terraform {
   backend "remote" {
     hostname     = "app.terraform.io"
