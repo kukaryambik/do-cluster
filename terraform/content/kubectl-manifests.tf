@@ -38,7 +38,7 @@ resource "kubectl_manifest" "onepassword-credentials" {
   force_new          = true
   yaml_body = templatefile(
     "onepassword-connect/secret_onepassword-credentials.yaml",
-    { creds = base64encode(var.OP_CREDENTIALS) }
+    { creds = var.OP_CREDENTIALS }
   )
 }
 
