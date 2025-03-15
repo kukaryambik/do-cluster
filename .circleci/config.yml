@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   apply:
     docker:
-      - image: hashicorp/terragrunt:latest
+      - image: alpine/terragrunt:1.10.3
     steps:
       - checkout
       - run:
