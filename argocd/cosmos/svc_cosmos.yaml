@@ -10,9 +10,9 @@ spec:
     app.kubernetes.io/name: cosmos
   type: ClusterIP
   ports:
-    - name: rpc
-      port: 26657
-      targetPort: rpc
     - name: p2p
       port: 26656
       targetPort: p2p
+    - name: rpc
+      port: 26657
+      targetPort: rpc
