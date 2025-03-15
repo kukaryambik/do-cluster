@@ -1,0 +1,31 @@
+version: 2.1
+
+jobs:
+  apply:
+    docker:
+      - image: hashicorp/terragrunt:latest
+    steps:
+      - checkout
+      - run:
+          name: Setup HCP Terraform Token
+          command: |
+            echo "export TF_TOKEN_app_terraform_io=$HCP_TOKEN" >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Check Terraform Formatting
+          command: terragrunt run-all fmt --terragrunt-non-interactive --check
+      - run:
+          name: Validate Terraform Configuration
+          command: terragrunt run-all validate --terragrunt-non-interactive
+      - run:
+          name: Plan Terraform Changes
+          command: terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
+      - run:
+          name: Apply Terraform Changes
+          command: terragrunt run-all apply --terragrunt-non-interactive tfplan
+
+workflows:
+  version: 2
+  terraform:
+    jobs:
+      - apply
