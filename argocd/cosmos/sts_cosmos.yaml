@@ -83,14 +83,14 @@ spec:
               name: rpc
           livenessProbe:
             httpGet:
-              path: /status
+              path: /health
               port: rpc
               scheme: HTTP
             initialDelaySeconds: 30
           readinessProbe:
             failureThreshold: 1
             httpGet:
-              path: /status
+              path: /health
               port: rpc
               scheme: HTTP
           volumeMounts:
