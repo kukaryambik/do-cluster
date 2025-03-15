@@ -15,12 +15,14 @@ spec:
           - path: argocd/*/_post
   template:
     metadata:
+      # yamllint disable rule:line-length
       name: >-
         {{- if (regexMatch "^_(pre|post)$" .path.basename) -}}
         {{ .path.basenameNormalized }}--{{ index .path.segments (sub (len .path.segments) 2) | normalize }}
         {{- else -}}
         main--{{ .path.basenameNormalized }}
         {{- end -}}
+      # yamllint enable rule:line-length
       annotations:
         argocd.argoproj.io/sync-wave: >-
           {{- if eq .path.basename "_pre" -}}
@@ -48,7 +50,10 @@ spec:
         - group: "*"
           kind: "*"
           jqPathExpressions:
-            - 'select(.metadata.annotations."argocd.argoproj.io/ignore-differences") | .data[] // .spec'
+            - >-
+              select(
+                .metadata.annotations."argocd.argoproj.io/ignore-differences"
+              ) | .data[] // .spec
       syncPolicy:
         automated:
           prune: true
