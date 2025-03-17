@@ -35,7 +35,7 @@ spec:
             defaultMode: 0777
         - name: cosmos-key
           secret:
-            name: cosmos-key
+            secretName: cosmos-key
             defaultMode: 0400
       initContainers:
         - name: init-cosmos
@@ -79,7 +79,7 @@ spec:
           command: ["sh", "-c"]
           args:
             - |-
-              gaiad keys add $HOSTNAME --recover --source /gaia/key.txt --home $HOME
+              gaiad keys add cosmos-key --recover --source /gaia/key.txt --home $HOME
               gaiad start --x-crisis-skip-assert-invariants --home $HOME
           ports:
             - containerPort: 26656
