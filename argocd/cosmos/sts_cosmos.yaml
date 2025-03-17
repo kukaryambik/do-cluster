@@ -64,6 +64,9 @@ spec:
             - name: init-sh
               mountPath: /gaia/init.sh
               subPath: init.sh
+            - name: cosmos-key
+              mountPath: /gaia/key.txt
+              subPath: key.txt
       containers:
         - name: cosmos
           image: ghcr.io/cosmos/gaia:v23.0.0-rc4
@@ -79,7 +82,6 @@ spec:
           command: ["sh", "-c"]
           args:
             - |-
-              gaiad keys add cosmos-key --recover --source /gaia/key.txt --home $HOME
               gaiad start --x-crisis-skip-assert-invariants --home $HOME
           ports:
             - containerPort: 26656
@@ -103,9 +105,6 @@ spec:
               name: emptydir
             - name: data
               mountPath: "/gaia"
-            - name: cosmos-key
-              mountPath: /gaia/key.txt
-              subPath: key.txt
   volumeClaimTemplates:
     - metadata:
         name: data
