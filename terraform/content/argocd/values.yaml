@@ -55,9 +55,14 @@ configs:
       project: "default"
   rbac:
     create: true
-    policy.default: "role:readonly"
+    policy.default: "role:guest"
     policy.csv: |
       g, kroche-co:infra, role:admin
+      p, guest, applications, get, *, allow
+      p, guest, applicationsets, get, *, allow
+      p, guest, clusters, get, *, allow
+      p, guest, projects, get, *, allow
+      p, guest, repositories, get, *, allow
     scopes: "[groups]"
 controller:
   clusterAdminAccess:
