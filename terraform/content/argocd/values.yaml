@@ -58,11 +58,11 @@ configs:
     policy.default: "role:guest"
     policy.csv: |
       g, kroche-co:infra, role:admin
-      p, guest, applications, get, *, allow
-      p, guest, applicationsets, get, *, allow
-      p, guest, clusters, get, *, allow
-      p, guest, projects, get, *, allow
-      p, guest, repositories, get, *, allow
+      p, role:guest, applications, get, *, allow
+      p, role:guest, applicationsets, get, *, allow
+      p, role:guest, clusters, get, *, allow
+      p, role:guest, projects, get, *, allow
+      p, role:guest, repositories, get, *, allow
     scopes: "[groups]"
 controller:
   clusterAdminAccess:
