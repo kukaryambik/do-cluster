@@ -4,6 +4,7 @@ configs:
   cm:
     admin.enabled: false
     users.anonymous.enabled: "true"
+    server.rbac.log.enforce.enable: "true"
     url: "https://argocd.iakimenko.link"
     dex.config: |
       connectors:
@@ -58,6 +59,7 @@ configs:
     policy.default: "role:guest"
     policy.csv: |
       g, kroche-co:infra, role:admin
+      p, role:readonly, logs, *, *, allow
       p, role:guest, applications, get, *, allow
       p, role:guest, applicationsets, get, *, allow
       p, role:guest, clusters, get, *, allow
