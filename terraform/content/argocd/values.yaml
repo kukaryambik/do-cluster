@@ -3,6 +3,7 @@ createAggregateRoles: true
 configs:
   cm:
     admin.enabled: false
+    users.anonymous.enabled: "true"
     url: "https://argocd.iakimenko.link"
     dex.config: |
       connectors:
