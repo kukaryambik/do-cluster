@@ -37,6 +37,13 @@ spec:
           publishService:
             enabled: true
           allowSnippetAnnotations: false
+          extraVolumeMounts:
+            - name: emptydir
+              mountPath: /etc/ingress-controller/ssl
+              subPath: ssl
+          extraVolumes:
+            - name: emptydir
+              emptyDir: {}
           config:
             ssl-redirect: "true"
             force-ssl-redirect: "true"
