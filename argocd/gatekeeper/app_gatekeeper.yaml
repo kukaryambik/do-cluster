@@ -1,0 +1,27 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gatekeeper
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  destination:
+    namespace: gatekeeper
+    server: "https://kubernetes.default.svc"
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions: [FailOnSharedResource=true]
+    retry:
+      limit: 15
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 10m
+  source:
+    repoURL: "https://open-policy-agent.github.io/gatekeeper/charts"
+    targetRevision: "~3.18.2"
+    chart: "gatekeeper"
+    helm: {}
