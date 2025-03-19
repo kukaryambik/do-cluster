@@ -43,7 +43,6 @@ spec:
               matchExpressions:
                 - key: "iakimenko.link/add-pod-tmp-emptydir"
                   operator: Exists
-            excludedNamespaces: ["kube-*"]
         rules:
           - name: add-volume
             location: "spec.volumes"

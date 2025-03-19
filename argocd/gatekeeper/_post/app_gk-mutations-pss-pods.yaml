@@ -45,7 +45,11 @@ spec:
                   operator: NotIn
                   values: ["false"]
             namespaceSelector: *selector
-            excludedNamespaces: ["kube-*"]
+            excludedNamespaces:
+              - "kube-*"
+              - "gatekeeper"
+              - "ingress-nginx"
+              - "loki"
         rules:
           ##
           ## Pod spec
