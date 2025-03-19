@@ -1,0 +1,190 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gk-mutations-pss-sets
+  finalizers: ["resources-finalizer.argocd.argoproj.io"]
+spec:
+  destination:
+    namespace: kube-gatekeeper
+    server: https://kubernetes.default.svc
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - FailOnSharedResource=true
+    retry:
+      limit: 15
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 10m
+  source:
+    repoURL: "https://github.com/kukaryambik/gatekeeper-mutations-helm-chart.git"
+    path: ./chart
+    targetRevision: "~v0.1.0"
+    helm:
+      valuesObject:
+        common:
+          kind: Assign
+          applyTo:
+            - groups:
+                - apps
+                - batch
+              kinds: &kinds
+                - Deployment
+                - StatefulSet
+                - DaemonSet
+                - Job
+              versions: ["v1"]
+          match:
+            scope: Namespaced
+            kinds:
+              - apiGroups: ["*"]
+                kinds: *kinds
+            labelSelector: &selector
+              matchExpressions:
+                - key: "iakimenko.link/pss-profile"
+                  operator: NotIn
+                  values: ["false"]
+            namespaceSelector: *selector
+            excludedNamespaces: ["kube-*"]
+        rules:
+          ##
+          ## Pod spec
+          - name: pss-host-pid
+            location: "spec.template.spec.hostPID"
+            value: false
+          - name: pss-host-network
+            location: "spec.template.spec.hostNetwork"
+            value: false
+          - name: pss-host-ipc
+            location: "spec.template.spec.hostIPC"
+            value: false
+          - name: pss-share-process-namespace
+            location: "spec.template.spec.shareProcessNamespace"
+            value: false
+
+          ##
+          ## Pod securityContext
+          - name: pss-deny-sysctls
+            location: "spec.template.spec.securityContext.sysctls"
+            value: []
+            condition: MustNotExist
+          - name: pss-seccomp-profile
+            location: "spec.template.spec.securityContext.seccompProfile.type"
+            value: "RuntimeDefault"
+            condition: MustNotExist
+          - name: pss-run-as-non-root
+            location: "spec.template.spec.securityContext.runAsNonRoot"
+            value: true
+          - name: pss-run-as-group
+            location: "spec.template.spec.securityContext.runAsGroup"
+            value: 65534
+            condition: MustNotExist
+          - name: pss-run-as-user
+            location: "spec.template.spec.securityContext.runAsUser"
+            value: 65534
+            condition: MustNotExist
+          - name: pss-fs-group
+            location: "spec.template.spec.securityContext.fsGroup"
+            value: 65534
+            condition: MustNotExist
+          - name: pss-supplemental-groups
+            location: "spec.template.spec.securityContext.supplementalGroups"
+            value: [65534]
+            condition: MustNotExist
+
+          ##
+          ## Container securityContext
+          - name: pss-deny-privilege-escalation-ephemeralcontainer
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.allowPrivilegeEscalation"
+            value: false
+          - name: pss-deny-privilege-escalation-initcontainer
+            location: "spec.template.spec.initContainers[name:*].securityContext.allowPrivilegeEscalation"
+            value: false
+          - name: pss-deny-privilege-escalation-containers
+            location: "spec.template.spec.containers[name:*].securityContext.allowPrivilegeEscalation"
+            value: false
+
+          - name: pss-deny-privileged-ephemeralcontainers
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.privileged"
+            value: false
+          - name: pss-deny-privileged-initcontainers
+            location: "spec.template.spec.initContainers[name:*].securityContext.privileged"
+            value: false
+          - name: pss-deny-privileged-containers
+            location: "spec.template.spec.containers[name:*].securityContext.privileged"
+            value: false
+
+          - name: pss-readonly-root-filesystem-ephemeralcontainers
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.readOnlyRootFilesystem"
+            value: true
+          - name: pss-readonly-root-filesystem-initcontainers
+            location: "spec.template.spec.initContainers[name:*].securityContext.readOnlyRootFilesystem"
+            value: true
+          - name: pss-readonly-root-filesystem-containers
+            location: "spec.template.spec.containers[name:*].securityContext.readOnlyRootFilesystem"
+            value: true
+
+          - name: pss-drop-capabilities-ephemeralcontainers
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.capabilities.drop"
+            value: ["ALL"]
+          - name: pss-drop-capabilities-initcontainers
+            location: "spec.template.spec.initContainers[name:*].securityContext.capabilities.drop"
+            value: ["ALL"]
+          - name: pss-drop-capabilities-containers
+            location: "spec.template.spec.containers[name:*].securityContext.capabilities.drop"
+            value: ["ALL"]
+
+          - name: pss-run-as-non-root-ephemeralcontainers
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.runAsNonRoot"
+            value: true
+          - name: pss-run-as-non-root-initcontainers
+            location: "spec.template.spec.initContainers[name:*].securityContext.runAsNonRoot"
+            value: true
+          - name: pss-run-as-non-root-containers
+            location: "spec.template.spec.containers[name:*].securityContext.runAsNonRoot"
+            value: true
+
+          - name: pss-run-as-user-ephemeralcontainers
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.runAsUser"
+            value: 65534
+            condition: MustNotExist
+          - name: pss-run-as-user-initcontainers
+            location: "spec.template.spec.initContainers[name:*].securityContext.runAsUser"
+            value: 65534
+            condition: MustNotExist
+          - name: pss-run-as-user-containers
+            location: "spec.template.spec.containers[name:*].securityContext.runAsUser"
+            value: 65534
+            condition: MustNotExist
+
+          - name: pss-run-as-group-ephemeralcontainers
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.runAsGroup"
+            value: 65534
+            condition: MustNotExist
+          - name: pss-run-as-group-initcontainers
+            location: "spec.template.spec.initContainers[name:*].securityContext.runAsGroup"
+            value: 65534
+            condition: MustNotExist
+          - name: pss-run-as-group-containers
+            location: "spec.template.spec.containers[name:*].securityContext.runAsGroup"
+            value: 65534
+            condition: MustNotExist
+
+          - name: pss-seccomp-profile-ephemeralcontainers
+            location: "spec.template.spec.ephemeralContainers[name:*].securityContext.seccompProfile.type"
+            value: "RuntimeDefault"
+            condition: MustNotExist
+          - name: pss-seccomp-profile-initcontainers
+            location: "spec.template.spec.initContainers[name:*].securityContext.seccompProfile.type"
+            value: "RuntimeDefault"
+            condition: MustNotExist
+          - name: pss-seccomp-profile-containers
+            location: "spec.template.spec.containers[name:*].securityContext.seccompProfile.type"
+            value: "RuntimeDefault"
+            condition: MustNotExist

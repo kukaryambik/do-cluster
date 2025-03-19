@@ -1,0 +1,64 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gk-global-pod-tmp-emptydir
+  finalizers: ["resources-finalizer.argocd.argoproj.io"]
+spec:
+  destination:
+    namespace: kube-gatekeeper
+    server: https://kubernetes.default.svc
+  project: infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - FailOnSharedResource=true
+    retry:
+      limit: 15
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 10m
+  source:
+    repoURL: "https://github.com/kukaryambik/gatekeeper-mutations-helm-chart.git"
+    path: ./chart
+    targetRevision: "~v0.1.0"
+    helm:
+      valuesObject:
+        common:
+          kind: ModifySet
+          applyTo:
+            - groups: [""]
+              kinds: ["Pod"]
+              versions: ["v1"]
+          match:
+            scope: Namespaced
+            kinds:
+              - apiGroups: ["*"]
+                kinds: ["Pod"]
+            labelSelector:
+              matchExpressions:
+                - key: "iakimenko.link/add-pod-tmp-emptydir"
+                  operator: Exists
+            excludedNamespaces: ["kube-*"]
+        rules:
+          - name: add-volume
+            location: "spec.volumes"
+            parameters:
+              operation: merge
+              values:
+                fromList:
+                  - name: pod-tmp-emptydir
+                    emptyDir: {}
+
+          - name: add-volumemount
+            location: "spec.containers[name: *].volumeMounts"
+            parameters:
+              operation: merge
+              values:
+                fromList:
+                  - mountPath: /tmp/
+                    name: pod-tmp-emptydir
