@@ -24,4 +24,6 @@ spec:
     repoURL: "https://open-policy-agent.github.io/gatekeeper/charts"
     targetRevision: "~3.18.2"
     chart: "gatekeeper"
-    helm: {}
+    helm:
+      valuesObject:
+        replicas: 1
