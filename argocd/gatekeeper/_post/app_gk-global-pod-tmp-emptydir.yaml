@@ -6,7 +6,7 @@ metadata:
   finalizers: ["resources-finalizer.argocd.argoproj.io"]
 spec:
   destination:
-    namespace: kube-gatekeeper
+    namespace: gatekeeper
     server: https://kubernetes.default.svc
   project: infra
   syncPolicy:
