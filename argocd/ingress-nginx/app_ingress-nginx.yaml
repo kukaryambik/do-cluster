@@ -32,6 +32,8 @@ spec:
       releaseName: ingress-nginx
       valuesObject:
         controller:
+          image:
+            readOnlyRootFilesystem: true
           publishService:
             enabled: true
           allowSnippetAnnotations: false
