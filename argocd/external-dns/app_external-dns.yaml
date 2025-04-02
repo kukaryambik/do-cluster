@@ -42,8 +42,8 @@ spec:
           - --publish-internal-services
         provider: cloudflare
         domainFilters:
-          - iakimenko.link.
-          - iakimenko.link
+          - iakimenko.me.
+          - iakimenko.me
         metrics:
           enabled: true
           serviceMonitor:

@@ -41,7 +41,7 @@ spec:
                 kinds: ["Pod"]
             labelSelector: &selector
               matchExpressions:
-                - key: "iakimenko.link/pss-profile"
+                - key: "iakimenko.me/pss-profile"
                   operator: NotIn
                   values: ["false"]
             namespaceSelector: *selector

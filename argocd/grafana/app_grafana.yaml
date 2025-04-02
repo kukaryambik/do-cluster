@@ -56,8 +56,8 @@ spec:
         grafana.ini:
           server:
             enable_gzip: true
-            domain: grafana.iakimenko.link
-            root_url: https://grafana.iakimenko.link:443
+            domain: grafana.iakimenko.me
+            root_url: https://grafana.iakimenko.me:443
           auth:
             oauth_auto_login: true
           auth.anonymous:
@@ -80,9 +80,9 @@ spec:
           annotations:
             cert-manager.io/cluster-issuer: "letsencrypt-issuer"
           hosts:
-            - grafana.iakimenko.link
+            - grafana.iakimenko.me
           path: /
           tls:
-            - secretName: grafana-iakimenko-link
+            - secretName: grafana-iakimenko-me
               hosts:
-                - grafana.iakimenko.link
+                - grafana.iakimenko.me

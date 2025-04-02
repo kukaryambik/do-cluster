@@ -5,7 +5,7 @@ configs:
     admin.enabled: false
     users.anonymous.enabled: "true"
     server.rbac.log.enforce.enable: "true"
-    url: "https://argocd.iakimenko.link"
+    url: "https://argocd.iakimenko.me"
     dex.config: |
       connectors:
         - type: github

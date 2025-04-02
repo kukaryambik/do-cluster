@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: cosmos.iakimenko.link
+    - host: cosmos.iakimenko.me
       http:
         paths:
           - backend:
@@ -22,5 +22,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - cosmos.iakimenko.link
-      secretName: cosmos-iakimenko-link
+        - cosmos.iakimenko.me
+      secretName: cosmos-iakimenko-me

@@ -33,10 +33,6 @@ spec:
           configMap:
             name: init-sh
             defaultMode: 0777
-        - name: cosmos-key
-          secret:
-            secretName: cosmos-key
-            defaultMode: 0400
       initContainers:
         - name: init-cosmos
           image: ghcr.io/cosmos/gaia:v23.0.0-rc4
@@ -64,9 +60,6 @@ spec:
             - name: init-sh
               mountPath: /gaia/init.sh
               subPath: init.sh
-            - name: cosmos-key
-              mountPath: /gaia/key.txt
-              subPath: key.txt
       containers:
         - name: cosmos
           image: ghcr.io/cosmos/gaia:v23.0.0-rc4
@@ -81,8 +74,7 @@ spec:
               value: /gaia
           command: ["sh", "-c"]
           args:
-            - |-
-              gaiad start --x-crisis-skip-assert-invariants --home $HOME
+            - gaiad start --x-crisis-skip-assert-invariants --home $HOME
           ports:
             - containerPort: 26656
               name: p2p

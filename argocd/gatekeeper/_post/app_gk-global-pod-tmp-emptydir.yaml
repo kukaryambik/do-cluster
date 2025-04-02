@@ -41,7 +41,7 @@ spec:
                 kinds: ["Pod"]
             labelSelector:
               matchExpressions:
-                - key: "iakimenko.link/add-pod-tmp-emptydir"
+                - key: "iakimenko.me/add-pod-tmp-emptydir"
                   operator: Exists
         rules:
           - name: add-volume

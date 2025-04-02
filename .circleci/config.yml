@@ -66,8 +66,8 @@ jobs:
             terragrunt run-all apply --terragrunt-non-interactive tfplan
 
 workflows:
-  version: 2
   terraform:
+    when: { equal: [ api, << pipeline.trigger_source >> ] }
     jobs:
       - check
       - apply-base:
